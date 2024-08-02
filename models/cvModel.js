@@ -3,7 +3,7 @@ const db = require("../config/db");
 const CV = {
   create: (cv, callback) => {
     const query =
-      "INSERT INTO CVs (job_seeker_id, photo_url, name, email, location, phone_number) VALUES (?, ?, ?, ?, ?, ?)";
+      "INSERT INTO tbl_108_dowork_CVs (job_seeker_id, photo_url, name, email, location, phone_number) VALUES (?, ?, ?, ?, ?, ?)";
     console.log("Executing query:", query, cv);
     db.query(
       query,
@@ -28,7 +28,7 @@ const CV = {
   },
 
   findAll: (callback) => {
-    const query = "SELECT * FROM CVs";
+    const query = "SELECT * FROM tbl_108_dowork_CVs";
     console.log("Executing query:", query);
     db.query(query, (err, results) => {
       if (err) {
@@ -42,7 +42,7 @@ const CV = {
   },
 
   findById: (id, callback) => {
-    const query = "SELECT * FROM CVs WHERE cv_id = ?";
+    const query = "SELECT * FROM tbl_108_dowork_CVs WHERE cv_id = ?";
     console.log("Executing query:", query, id);
     db.query(query, [id], (err, result) => {
       if (err) {
@@ -57,7 +57,7 @@ const CV = {
 
   update: (id, cv, callback) => {
     const query =
-      "UPDATE CVs SET photo_url = ?, name = ?, email = ?, location = ?, phone_number = ? WHERE cv_id = ?";
+      "UPDATE tbl_108_dowork_CVs SET photo_url = ?, name = ?, email = ?, location = ?, phone_number = ? WHERE cv_id = ?";
     console.log("Executing query:", query, cv, id);
     db.query(
       query,
@@ -75,7 +75,7 @@ const CV = {
   },
 
   delete: (id, callback) => {
-    const query = "DELETE FROM CVs WHERE cv_id = ?";
+    const query = "DELETE FROM tbl_108_dowork_CVs WHERE cv_id = ?";
     console.log("Executing query:", query, id);
     db.query(query, [id], (err, result) => {
       if (err) {
