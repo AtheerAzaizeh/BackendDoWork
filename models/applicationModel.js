@@ -2,7 +2,7 @@ const db = require('../config/db');
 
 const Application = {
   create: (application, callback) => {
-    const query = 'INSERT INTO Applications (job_id, job_seeker_id, cover_letter, resume) VALUES (?, ?, ?, ?)';
+    const query = 'INSERT INTO tbl_108_dowork_Applications (job_id, job_seeker_id, cover_letter, resume) VALUES (?, ?, ?, ?)';
     console.log('Executing query:', query, application);
     db.query(query, [application.job_id, application.job_seeker_id, application.cover_letter, application.resume], (err, result) => {
       if (err) {
@@ -16,7 +16,7 @@ const Application = {
   },
 
   findAll: (callback) => {
-    const query = 'SELECT * FROM Applications';
+    const query = 'SELECT * FROM tbl_108_dowork_Applications';
     console.log('Executing query:', query);
     db.query(query, (err, results) => {
       if (err) {
@@ -30,7 +30,7 @@ const Application = {
   },
 
   findById: (id, callback) => {
-    const query = 'SELECT * FROM Applications WHERE application_id = ?';
+    const query = 'SELECT * FROM tbl_108_dowork_Applications WHERE application_id = ?';
     console.log('Executing query:', query, id);
     db.query(query, [id], (err, result) => {
       if (err) {
@@ -44,7 +44,7 @@ const Application = {
   },
 
   findByJobId: (job_id, callback) => {
-    const query = 'SELECT * FROM Applications WHERE job_id = ?';
+    const query = 'SELECT * FROM tbl_108_dowork_Applications WHERE job_id = ?';
     console.log('Executing query:', query, job_id);
     db.query(query, [job_id], (err, results) => {
       if (err) {
@@ -58,7 +58,7 @@ const Application = {
   },
 
   findByJobSeekerId: (job_seeker_id, callback) => {
-    const query = 'SELECT * FROM Applications WHERE job_seeker_id = ?';
+    const query = 'SELECT * FROM tbl_108_dowork_Applications WHERE job_seeker_id = ?';
     console.log('Executing query:', query, job_seeker_id);
     db.query(query, [job_seeker_id], (err, results) => {
       if (err) {
@@ -72,7 +72,7 @@ const Application = {
   },
 
   update: (id, application, callback) => {
-    const query = 'UPDATE Applications SET cover_letter = ?, resume = ? WHERE application_id = ?';
+    const query = 'UPDATE tbl_108_dowork_Applications SET cover_letter = ?, resume = ? WHERE application_id = ?';
     console.log('Executing query:', query, application, id);
     db.query(query, [application.cover_letter, application.resume, id], (err, result) => {
       if (err) {
@@ -86,7 +86,7 @@ const Application = {
   },
 
   delete: (id, callback) => {
-    const query = 'DELETE FROM Applications WHERE application_id = ?';
+    const query = 'DELETE FROM tbl_108_dowork_Applications WHERE application_id = ?';
     console.log('Executing query:', query, id);
     db.query(query, [id], (err, result) => {
       if (err) {
