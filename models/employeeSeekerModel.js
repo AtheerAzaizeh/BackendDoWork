@@ -3,7 +3,7 @@ const db = require("../config/db");
 const EmployeeSeeker = {
   create: (employeeSeeker, callback) => {
     const query =
-      "INSERT INTO EmployeeSeekers (username, password, email, profile_picture) VALUES (?, ?, ?, ?)";
+      "INSERT INTO tbl_108_dowork_EmployeeSeekers (username, password, email, profile_picture) VALUES (?, ?, ?, ?)";
     db.query(
       query,
       [
@@ -23,7 +23,7 @@ const EmployeeSeeker = {
   },
 
   findAll: (callback) => {
-    const query = "SELECT * FROM EmployeeSeekers";
+    const query = "SELECT * FROM tbl_108_dowork_EmployeeSeekers";
     console.log("Executing query:", query);
     db.query(query, (err, results) => {
       if (err) {
@@ -37,7 +37,7 @@ const EmployeeSeeker = {
   },
 
   findById: (id, callback) => {
-    const query = "SELECT * FROM EmployeeSeekers WHERE employee_seeker_id = ?";
+    const query = "SELECT * FROM tbl_108_dowork_EmployeeSeekers WHERE employee_seeker_id = ?";
     console.log("Executing query:", query, id);
     db.query(query, [id], (err, result) => {
       if (err) {
@@ -52,7 +52,7 @@ const EmployeeSeeker = {
 
   update: (id, employeeSeeker, callback) => {
     const query =
-      "UPDATE EmployeeSeekers SET username = ?, password = ?, email = ? WHERE employee_seeker_id = ?";
+      "UPDATE tbl_108_dowork_EmployeeSeekers SET username = ?, password = ?, email = ? WHERE employee_seeker_id = ?";
     console.log("Executing query:", query, employeeSeeker, id);
     db.query(
       query,
@@ -75,7 +75,7 @@ const EmployeeSeeker = {
   },
 
   delete: (id, callback) => {
-    const query = "DELETE FROM EmployeeSeekers WHERE employee_seeker_id = ?";
+    const query = "DELETE FROM tbl_108_dowork_EmployeeSeekers WHERE employee_seeker_id = ?";
     console.log("Executing query:", query, id);
     db.query(query, [id], (err, result) => {
       if (err) {
