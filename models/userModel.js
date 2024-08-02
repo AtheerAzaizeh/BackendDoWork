@@ -3,7 +3,7 @@ const db = require("../config/db");
 const User = {
   findByEmail: (email, callback) => {
     const queryEmployeeSeekers =
-      "SELECT * FROM employeeSeekers WHERE email = ?";
+      "SELECT * FROM tbl_108_dowork_EmployeeSeekers WHERE email = ?";
     const queryJobSeekers = "SELECT * FROM jobSeekers WHERE email = ?";
 
     db.query(queryEmployeeSeekers, [email], (err, employeeResults) => {

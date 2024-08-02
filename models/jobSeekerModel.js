@@ -3,7 +3,7 @@ const db = require("../config/db");
 const JobSeeker = {
   create: (jobSeeker, callback) => {
     const query =
-      "INSERT INTO JobSeekers (username, password, email, skills) VALUES (?, ?, ?, ?)";
+      "INSERT INTO tbl_108_dowork_JobSeekers (username, password, email, skills) VALUES (?, ?, ?, ?)";
     console.log("Executing query:", query, jobSeeker);
     db.query(
       query,
@@ -26,7 +26,7 @@ const JobSeeker = {
   },
 
   findAll: (callback) => {
-    const query = "SELECT * FROM JobSeekers";
+    const query = "SELECT * FROM tbl_108_dowork_JobSeekers";
     console.log("Executing query:", query);
     db.query(query, (err, results) => {
       if (err) {
@@ -40,7 +40,7 @@ const JobSeeker = {
   },
 
   findById: (id, callback) => {
-    const query = "SELECT * FROM JobSeekers WHERE job_seeker_id = ?";
+    const query = "SELECT * FROM tbl_108_dowork_JobSeekers WHERE job_seeker_id = ?";
     console.log("Executing query:", query, id);
     db.query(query, [id], (err, result) => {
       if (err) {
@@ -55,7 +55,7 @@ const JobSeeker = {
 
   update: (id, jobSeeker, callback) => {
     const query =
-      "UPDATE JobSeekers SET username = ?, password = ?, email = ?, skills = ? WHERE job_seeker_id = ?";
+      "UPDATE tbl_108_dowork_JobSeekers SET username = ?, password = ?, email = ?, skills = ? WHERE job_seeker_id = ?";
     console.log("Executing query:", query, jobSeeker, id);
     db.query(
       query,

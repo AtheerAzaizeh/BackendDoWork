@@ -3,7 +3,7 @@ const db = require("../config/db");
 const Job = {
   findBySkills: (skills, callback) => {
     const query = `
-      SELECT * FROM Jobs 
+      SELECT * FROM tbl_108_dowork_Jobs 
       WHERE skill IN (?)`;
     console.log("Executing query:", query, skills);
     db.query(query, [skills], (err, results) => {
@@ -18,7 +18,7 @@ const Job = {
 
   create: (job, callback) => {
     const query =
-      "INSERT INTO Jobs (employer_id, title, description, location, salary, skill) VALUES (?, ?, ?, ?, ?, ?)";
+      "INSERT INTO tbl_108_dowork_Jobs  (employer_id, title, description, location, salary, skill) VALUES (?, ?, ?, ?, ?, ?)";
     console.log("Executing query:", query, job);
     db.query(
       query,
@@ -43,7 +43,7 @@ const Job = {
   },
 
   findAll: (callback) => {
-    const query = "SELECT * FROM Jobs";
+    const query = "SELECT * FROM tbl_108_dowork_Jobs ";
     console.log("Executing query:", query);
     db.query(query, (err, results) => {
       if (err) {
@@ -57,7 +57,7 @@ const Job = {
   },
 
   findById: (id, callback) => {
-    const query = "SELECT * FROM Jobs WHERE job_id = ?";
+    const query = "SELECT * FROM tbl_108_dowork_Jobs  WHERE job_id = ?";
     console.log("Executing query:", query, id);
     db.query(query, [id], (err, result) => {
       if (err) {
@@ -72,7 +72,7 @@ const Job = {
 
   update: (id, job, callback) => {
     const query =
-      "UPDATE Jobs SET title = ?, description = ?, location = ?, salary = ?, skill = ? WHERE job_id = ?";
+      "UPDATE tbl_108_dowork_Jobs  SET title = ?, description = ?, location = ?, salary = ?, skill = ? WHERE job_id = ?";
     console.log("Executing query:", query, job, id);
     db.query(
       query,
@@ -90,7 +90,7 @@ const Job = {
   },
 
   delete: (id, callback) => {
-    const query = "DELETE FROM Jobs WHERE job_id = ?";
+    const query = "DELETE FROM tbl_108_dowork_Jobs  WHERE job_id = ?";
     console.log("Executing query:", query, id);
     db.query(query, [id], (err, result) => {
       if (err) {

@@ -3,7 +3,7 @@ const db = require("../config/db");
 const Employer = {
   create: (employer, callback) => {
     const query =
-      "INSERT INTO Employers (company_name, company_description, contact_email, employee_seeker_id) VALUES (?, ?, ?, ?)";
+      "INSERT INTO tbl_108_dowork_Employers (company_name, company_description, contact_email, employee_seeker_id) VALUES (?, ?, ?, ?)";
     console.log("Executing query:", query, employer);
     db.query(
       query,
@@ -26,7 +26,7 @@ const Employer = {
   },
 
   findAll: (callback) => {
-    const query = "SELECT * FROM Employers";
+    const query = "SELECT * FROM tbl_108_dowork_Employers";
     console.log("Executing query:", query);
     db.query(query, (err, results) => {
       if (err) {
@@ -40,7 +40,7 @@ const Employer = {
   },
 
   findById: (id, callback) => {
-    const query = "SELECT * FROM Employers WHERE employer_id = ?";
+    const query = "SELECT * FROM tbl_108_dowork_Employers WHERE employer_id = ?";
     console.log("Executing query:", query, id);
     db.query(query, [id], (err, result) => {
       if (err) {
@@ -55,7 +55,7 @@ const Employer = {
 
   update: (id, employer, callback) => {
     const query =
-      "UPDATE Employers SET company_name = ?, company_description = ?, contact_email = ?, employee_seeker_id = ? WHERE employer_id = ?";
+      "UPDATE tbl_108_dowork_Employers SET company_name = ?, company_description = ?, contact_email = ?, employee_seeker_id = ? WHERE employer_id = ?";
     console.log("Executing query:", query, employer, id);
     db.query(
       query,

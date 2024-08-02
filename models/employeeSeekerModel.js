@@ -52,7 +52,7 @@ const EmployeeSeeker = {
 
   update: (id, employeeSeeker, callback) => {
     const query =
-      "UPDATE tbl_108_dowork_EmployeeSeekers SET username = ?, password = ?, email = ? WHERE employee_seeker_id = ?";
+      "UPDATE EmployeeSeekers SET username = ?, password = ?, email = ? WHERE employee_seeker_id = ?";
     console.log("Executing query:", query, employeeSeeker, id);
     db.query(
       query,
@@ -75,7 +75,7 @@ const EmployeeSeeker = {
   },
 
   delete: (id, callback) => {
-    const query = "DELETE FROM tbl_108_dowork_EmployeeSeekers WHERE employee_seeker_id = ?";
+    const query = "DELETE FROM EmployeeSeekers WHERE employee_seeker_id = ?";
     console.log("Executing query:", query, id);
     db.query(query, [id], (err, result) => {
       if (err) {
