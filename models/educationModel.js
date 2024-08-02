@@ -3,7 +3,7 @@ const db = require("../config/db");
 const Education = {
   create: (education, callback) => {
     const query =
-      "INSERT INTO Education (cv_id, academic_name, start_date, end_date) VALUES (?, ?, ?, ?)";
+      "INSERT INTO tbl_108_dowork_Education (cv_id, academic_name, start_date, end_date) VALUES (?, ?, ?, ?)";
     console.log("Executing query:", query, education);
     db.query(
       query,
@@ -26,7 +26,7 @@ const Education = {
   },
 
   findAll: (callback) => {
-    const query = "SELECT * FROM Education";
+    const query = "SELECT * FROM tbl_108_dowork_Education";
     console.log("Executing query:", query);
     db.query(query, (err, results) => {
       if (err) {
@@ -40,7 +40,7 @@ const Education = {
   },
 
   findByCVId: (cv_id, callback) => {
-    const query = "SELECT * FROM Education WHERE cv_id = ?";
+    const query = "SELECT * FROM tbl_108_dowork_Education WHERE cv_id = ?";
     console.log("Executing query:", query, cv_id);
     db.query(query, [cv_id], (err, results) => {
       if (err) {
@@ -55,7 +55,7 @@ const Education = {
 
   update: (id, education, callback) => {
     const query =
-      "UPDATE Education SET academic_name = ?, start_date = ?, end_date = ? WHERE education_id = ?";
+      "UPDATE tbl_108_dowork_Education SET academic_name = ?, start_date = ?, end_date = ? WHERE education_id = ?";
     console.log("Executing query:", query, education, id);
     db.query(
       query,
@@ -73,7 +73,7 @@ const Education = {
   },
 
   delete: (id, callback) => {
-    const query = "DELETE FROM Education WHERE education_id = ?";
+    const query = "DELETE FROM tbl_108_dowork_Education WHERE education_id = ?";
     console.log("Executing query:", query, id);
     db.query(query, [id], (err, result) => {
       if (err) {
