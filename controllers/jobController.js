@@ -1,6 +1,6 @@
 const Job = require("../models/jobModel");
 
-exports.create = (req, res) => {
+exports.create = async (req, res) => {
   console.log("Creating a new job:", req.body);
   const newJob = {
     employer_id: req.body.employer_id,
@@ -8,56 +8,52 @@ exports.create = (req, res) => {
     description: req.body.description,
     location: req.body.location,
     salary: req.body.salary,
+    skill: req.body.skill,
   };
 
-  Job.create(newJob, (err, result) => {
-    if (err) {
-      console.error("Error creating job:", err);
-      res.status(500).json({ message: "Error creating job" });
-      return;
-    }
+  try {
+    const result = await Job.create(newJob);
     console.log("Job created:", result);
     res.status(201).json({ message: "Job created", job: result });
-  });
+  } catch (err) {
+    console.error("Error creating job:", err);
+    res.status(500).json({ message: "Error creating job" });
+  }
 };
 
-exports.getJobsForYou = (req, res) => {
+exports.getJobsForYou = async (req, res) => {
   const skills = req.query.skills ? req.query.skills.split(",") : [];
   console.log("Fetching jobs for you with skills:", skills);
 
-  Job.findBySkills(skills, (err, jobs) => {
-    if (err) {
-      console.error("Error fetching jobs:", err);
-      return res.status(500).json({ message: "Server error" });
-    }
+  try {
+    const jobs = await Job.findBySkills(skills);
     console.log("Jobs fetched:", jobs);
     res.json(jobs);
-  });
+  } catch (err) {
+    console.error("Error fetching jobs:", err);
+    res.status(500).json({ message: "Server error" });
+  }
 };
 
-exports.findAll = (req, res) => {
+exports.findAll = async (req, res) => {
   console.log("Fetching all jobs");
-  Job.findAll((err, results) => {
-    if (err) {
-      console.error("Error fetching jobs:", err);
-      res.status(500).send("Error fetching jobs");
-      return;
-    }
+
+  try {
+    const results = await Job.findAll();
     console.log("Jobs fetched:", results);
     res.json(results);
-  });
+  } catch (err) {
+    console.error("Error fetching jobs:", err);
+    res.status(500).send("Error fetching jobs");
+  }
 };
 
-exports.findById = (req, res) => {
+exports.findById = async (req, res) => {
   const id = req.params.id;
   console.log(`Fetching job with id: ${id}`);
 
-  Job.findById(id, (err, result) => {
-    if (err) {
-      console.error("Error fetching job:", err);
-      res.status(500).send("Error fetching job");
-      return;
-    }
+  try {
+    const result = await Job.findById(id);
     if (!result) {
       console.log(`Job with id ${id} not found`);
       res.status(404).send("Job not found");
@@ -65,10 +61,13 @@ exports.findById = (req, res) => {
     }
     console.log(`Job with id ${id} fetched:`, result);
     res.json(result);
-  });
+  } catch (err) {
+    console.error("Error fetching job:", err);
+    res.status(500).send("Error fetching job");
+  }
 };
 
-exports.update = (req, res) => {
+exports.update = async (req, res) => {
   const id = req.params.id;
   console.log(`Updating job with id: ${id}`);
   const updatedJob = {
@@ -76,14 +75,11 @@ exports.update = (req, res) => {
     description: req.body.description,
     location: req.body.location,
     salary: req.body.salary,
+    skill: req.body.skill,
   };
 
-  Job.update(id, updatedJob, (err, result) => {
-    if (err) {
-      console.error("Error updating job:", err);
-      res.status(500).send("Error updating job");
-      return;
-    }
+  try {
+    const result = await Job.update(id, updatedJob);
     if (result.affectedRows === 0) {
       console.log(`Job with id ${id} not found`);
       res.status(404).send("Job not found");
@@ -91,19 +87,18 @@ exports.update = (req, res) => {
     }
     console.log(`Job with id ${id} updated:`, result);
     res.send("Job updated");
-  });
+  } catch (err) {
+    console.error("Error updating job:", err);
+    res.status(500).send("Error updating job");
+  }
 };
 
-exports.delete = (req, res) => {
+exports.delete = async (req, res) => {
   const id = req.params.id;
   console.log(`Deleting job with id: ${id}`);
 
-  Job.delete(id, (err, result) => {
-    if (err) {
-      console.error("Error deleting job:", err);
-      res.status(500).send("Error deleting job");
-      return;
-    }
+  try {
+    const result = await Job.delete(id);
     if (result.affectedRows === 0) {
       console.log(`Job with id ${id} not found`);
       res.status(404).send("Job not found");
@@ -111,5 +106,8 @@ exports.delete = (req, res) => {
     }
     console.log(`Job with id ${id} deleted:`, result);
     res.send("Job deleted");
-  });
+  } catch (err) {
+    console.error("Error deleting job:", err);
+    res.status(500).send("Error deleting job");
+  }
 };

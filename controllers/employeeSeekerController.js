@@ -1,6 +1,6 @@
 const EmployeeSeeker = require("../models/employeeSeekerModel");
 
-exports.create = (req, res) => {
+exports.create = async (req, res) => {
   const newEmployeeSeeker = {
     username: req.body.username,
     email: req.body.email,
@@ -8,42 +8,35 @@ exports.create = (req, res) => {
     profile_picture: req.file ? req.file.filename : null,
   };
 
-  EmployeeSeeker.create(newEmployeeSeeker, (err, result) => {
-    if (err) {
-      console.error("Error creating employee seeker:", err);
-      return res
-        .status(500)
-        .json({ message: "Error creating employee seeker" });
-    }
+  try {
+    const result = await EmployeeSeeker.create(newEmployeeSeeker);
     res
       .status(201)
       .json({ message: "Employee seeker created", id: result.insertId });
-  });
+  } catch (err) {
+    console.error("Error creating employee seeker:", err);
+    res.status(500).json({ message: "Error creating employee seeker" });
+  }
 };
 
-exports.findAll = (req, res) => {
+exports.findAll = async (req, res) => {
   console.log("Fetching all employee seekers");
-  EmployeeSeeker.findAll((err, results) => {
-    if (err) {
-      console.error("Error fetching employee seekers:", err);
-      res.status(500).send("Error fetching employee seekers");
-      return;
-    }
+  try {
+    const results = await EmployeeSeeker.findAll();
     console.log("Employee seekers fetched:", results);
     res.json(results);
-  });
+  } catch (err) {
+    console.error("Error fetching employee seekers:", err);
+    res.status(500).send("Error fetching employee seekers");
+  }
 };
 
-exports.findById = (req, res) => {
+exports.findById = async (req, res) => {
   const id = req.params.id;
   console.log(`Fetching employee seeker with id: ${id}`);
 
-  EmployeeSeeker.findById(id, (err, result) => {
-    if (err) {
-      console.error("Error fetching employee seeker:", err);
-      res.status(500).send("Error fetching employee seeker");
-      return;
-    }
+  try {
+    const result = await EmployeeSeeker.findById(id);
     if (!result) {
       console.log(`Employee seeker with id ${id} not found`);
       res.status(404).send("Employee seeker not found");
@@ -51,10 +44,13 @@ exports.findById = (req, res) => {
     }
     console.log(`Employee seeker with id ${id} fetched:`, result);
     res.json(result);
-  });
+  } catch (err) {
+    console.error("Error fetching employee seeker:", err);
+    res.status(500).send("Error fetching employee seeker");
+  }
 };
 
-exports.update = (req, res) => {
+exports.update = async (req, res) => {
   const id = req.params.id;
   console.log(`Updating employee seeker with id: ${id}`);
   const updatedEmployeeSeeker = {
@@ -63,12 +59,8 @@ exports.update = (req, res) => {
     email: req.body.email,
   };
 
-  EmployeeSeeker.update(id, updatedEmployeeSeeker, (err, result) => {
-    if (err) {
-      console.error("Error updating employee seeker:", err);
-      res.status(500).send("Error updating employee seeker");
-      return;
-    }
+  try {
+    const result = await EmployeeSeeker.update(id, updatedEmployeeSeeker);
     if (result.affectedRows === 0) {
       console.log(`Employee seeker with id ${id} not found`);
       res.status(404).send("Employee seeker not found");
@@ -76,19 +68,18 @@ exports.update = (req, res) => {
     }
     console.log(`Employee seeker with id ${id} updated:`, result);
     res.send("Employee seeker updated");
-  });
+  } catch (err) {
+    console.error("Error updating employee seeker:", err);
+    res.status(500).send("Error updating employee seeker");
+  }
 };
 
-exports.delete = (req, res) => {
+exports.delete = async (req, res) => {
   const id = req.params.id;
   console.log(`Deleting employee seeker with id: ${id}`);
 
-  EmployeeSeeker.delete(id, (err, result) => {
-    if (err) {
-      console.error("Error deleting employee seeker:", err);
-      res.status(500).send("Error deleting employee seeker");
-      return;
-    }
+  try {
+    const result = await EmployeeSeeker.delete(id);
     if (result.affectedRows === 0) {
       console.log(`Employee seeker with id ${id} not found`);
       res.status(404).send("Employee seeker not found");
@@ -96,5 +87,8 @@ exports.delete = (req, res) => {
     }
     console.log(`Employee seeker with id ${id} deleted:`, result);
     res.send("Employee seeker deleted");
-  });
+  } catch (err) {
+    console.error("Error deleting employee seeker:", err);
+    res.status(500).send("Error deleting employee seeker");
+  }
 };

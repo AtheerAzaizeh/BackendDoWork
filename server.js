@@ -3,7 +3,7 @@ const app = express();
 const path = require("path");
 const multer = require("multer");
 
-const port = process.env.PORT || 3000;
+const port = 3010;
 const cors = require("cors");
 const employeeSeekerRoutes = require("./routes/employeeSeekerRoutes");
 const jobSeekerRoutes = require("./routes/jobSeekerRoutes");

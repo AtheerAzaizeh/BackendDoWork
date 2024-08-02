@@ -1,13 +1,11 @@
 const User = require("../models/userModel");
 
-exports.login = (req, res) => {
+exports.login = async (req, res) => {
   const { email, password } = req.body;
 
-  User.findByEmail(email, (err, user, userType) => {
-    if (err) {
-      console.error("Error finding user:", err);
-      return res.status(500).json({ message: "Server error" });
-    }
+  try {
+    const { user, userType } = await User.findByEmail(email);
+
     if (!user) {
       console.log("User not found with email:", email);
       return res.status(401).json({ message: "Invalid email or password" });
@@ -33,18 +31,19 @@ exports.login = (req, res) => {
         userType: userType, // Include the userType in the response
       },
     });
-  });
+  } catch (err) {
+    console.error("Error finding user:", err);
+    return res.status(500).json({ message: "Server error" });
+  }
 };
 
-exports.getProfilePicture = (req, res) => {
+exports.getProfilePicture = async (req, res) => {
   const email = req.query.email;
   console.log("Fetching profile picture for email:", email);
 
-  User.findByEmail(email, (err, user) => {
-    if (err) {
-      console.error("Error finding user:", err);
-      return res.status(500).json({ message: "Server error" });
-    }
+  try {
+    const { user } = await User.findByEmail(email);
+
     if (!user) {
       console.log("User not found for email:", email);
       return res.status(404).json({ message: "User not found" });
@@ -54,5 +53,8 @@ exports.getProfilePicture = (req, res) => {
     console.log("Profile picture URL:", user.profile_picture);
 
     return res.status(200).json({ profilePictureUrl: user.profile_picture });
-  });
+  } catch (err) {
+    console.error("Error finding user:", err);
+    return res.status(500).json({ message: "Server error" });
+  }
 };

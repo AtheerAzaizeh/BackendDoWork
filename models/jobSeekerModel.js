@@ -1,95 +1,51 @@
-const db = require("../config/db");
+const { executeQuery } = require("../config/dbHelper");
 
 const JobSeeker = {
-  create: (jobSeeker, callback) => {
+  create: async (jobSeeker) => {
     const query =
       "INSERT INTO tbl_108_dowork_JobSeekers (username, password, email, skills) VALUES (?, ?, ?, ?)";
-    console.log("Executing query:", query, jobSeeker);
-    db.query(
-      query,
-      [
-        jobSeeker.username,
-        jobSeeker.password,
-        jobSeeker.email,
-        jobSeeker.skills,
-      ],
-      (err, result) => {
-        if (err) {
-          console.error("Error executing query:", err);
-          callback(err, null);
-          return;
-        }
-        console.log("Query executed successfully:", result);
-        callback(null, result);
-      }
-    );
+    const values = [
+      jobSeeker.username,
+      jobSeeker.password,
+      jobSeeker.email,
+      jobSeeker.skills,
+    ];
+    console.log("Executing query:", query, values);
+    return executeQuery(query, values);
   },
 
-  findAll: (callback) => {
+  findAll: async () => {
     const query = "SELECT * FROM tbl_108_dowork_JobSeekers";
     console.log("Executing query:", query);
-    db.query(query, (err, results) => {
-      if (err) {
-        console.error("Error executing query:", err);
-        callback(err, null);
-        return;
-      }
-      console.log("Query executed successfully:", results);
-      callback(null, results);
-    });
+    return executeQuery(query);
   },
 
-  findById: (id, callback) => {
-    const query = "SELECT * FROM tbl_108_dowork_JobSeekers WHERE job_seeker_id = ?";
+  findById: async (id) => {
+    const query =
+      "SELECT * FROM tbl_108_dowork_JobSeekers WHERE job_seeker_id = ?";
     console.log("Executing query:", query, id);
-    db.query(query, [id], (err, result) => {
-      if (err) {
-        console.error("Error executing query:", err);
-        callback(err, null);
-        return;
-      }
-      console.log("Query executed successfully:", result);
-      callback(null, result);
-    });
+    return executeQuery(query, [id]);
   },
 
-  update: (id, jobSeeker, callback) => {
+  update: async (id, jobSeeker) => {
     const query =
       "UPDATE tbl_108_dowork_JobSeekers SET username = ?, password = ?, email = ?, skills = ? WHERE job_seeker_id = ?";
-    console.log("Executing query:", query, jobSeeker, id);
-    db.query(
-      query,
-      [
-        jobSeeker.username,
-        jobSeeker.password,
-        jobSeeker.email,
-        jobSeeker.skills,
-        id,
-      ],
-      (err, result) => {
-        if (err) {
-          console.error("Error executing query:", err);
-          callback(err, null);
-          return;
-        }
-        console.log("Query executed successfully:", result);
-        callback(null, result);
-      }
-    );
+    const values = [
+      jobSeeker.username,
+      jobSeeker.password,
+      jobSeeker.email,
+      jobSeeker.skills,
+      id,
+    ];
+    console.log("Executing query:", query, values);
+    return executeQuery(query, values);
   },
 
-  delete: (id, callback) => {
-    const query = "DELETE FROM JobSeekers WHERE job_seeker_id = ?";
+  delete: async (id) => {
+    const query =
+      "DELETE FROM tbl_108_dowork_JobSeekers WHERE job_seeker_id = ?";
     console.log("Executing query:", query, id);
-    db.query(query, [id], (err, result) => {
-      if (err) {
-        console.error("Error executing query:", err);
-        callback(err, null);
-        return;
-      }
-      console.log("Query executed successfully:", result);
-      callback(null, result);
-    });
+    return executeQuery(query, [id]);
   },
 };
 

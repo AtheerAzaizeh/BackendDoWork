@@ -1,6 +1,6 @@
 const Employer = require("../models/employerModel");
 
-exports.create = (req, res) => {
+exports.create = async (req, res) => {
   console.log("Creating a new employer:", req.body);
   const newEmployer = {
     company_name: req.body.company_name,
@@ -9,40 +9,35 @@ exports.create = (req, res) => {
     employee_seeker_id: req.body.employee_seeker_id,
   };
 
-  Employer.create(newEmployer, (err, result) => {
-    if (err) {
-      console.error("Error creating employer:", err);
-      res.status(500).send("Error creating employer");
-      return;
-    }
+  try {
+    const result = await Employer.create(newEmployer);
     console.log("Employer created:", result);
     res.status(201).send("Employer created");
-  });
+  } catch (err) {
+    console.error("Error creating employer:", err);
+    res.status(500).send("Error creating employer");
+  }
 };
 
-exports.findAll = (req, res) => {
+exports.findAll = async (req, res) => {
   console.log("Fetching all employers");
-  Employer.findAll((err, results) => {
-    if (err) {
-      console.error("Error fetching employers:", err);
-      res.status(500).send("Error fetching employers");
-      return;
-    }
+
+  try {
+    const results = await Employer.findAll();
     console.log("Employers fetched:", results);
     res.json(results);
-  });
+  } catch (err) {
+    console.error("Error fetching employers:", err);
+    res.status(500).send("Error fetching employers");
+  }
 };
 
-exports.findById = (req, res) => {
+exports.findById = async (req, res) => {
   const id = req.params.id;
   console.log(`Fetching employer with id: ${id}`);
 
-  Employer.findById(id, (err, result) => {
-    if (err) {
-      console.error("Error fetching employer:", err);
-      res.status(500).send("Error fetching employer");
-      return;
-    }
+  try {
+    const result = await Employer.findById(id);
     if (!result) {
       console.log(`Employer with id ${id} not found`);
       res.status(404).send("Employer not found");
@@ -50,10 +45,13 @@ exports.findById = (req, res) => {
     }
     console.log(`Employer with id ${id} fetched:`, result);
     res.json(result);
-  });
+  } catch (err) {
+    console.error("Error fetching employer:", err);
+    res.status(500).send("Error fetching employer");
+  }
 };
 
-exports.update = (req, res) => {
+exports.update = async (req, res) => {
   const id = req.params.id;
   console.log(`Updating employer with id: ${id}`);
   const updatedEmployer = {
@@ -63,12 +61,8 @@ exports.update = (req, res) => {
     employee_seeker_id: req.body.employee_seeker_id,
   };
 
-  Employer.update(id, updatedEmployer, (err, result) => {
-    if (err) {
-      console.error("Error updating employer:", err);
-      res.status(500).send("Error updating employer");
-      return;
-    }
+  try {
+    const result = await Employer.update(id, updatedEmployer);
     if (result.affectedRows === 0) {
       console.log(`Employer with id ${id} not found`);
       res.status(404).send("Employer not found");
@@ -76,19 +70,18 @@ exports.update = (req, res) => {
     }
     console.log(`Employer with id ${id} updated:`, result);
     res.send("Employer updated");
-  });
+  } catch (err) {
+    console.error("Error updating employer:", err);
+    res.status(500).send("Error updating employer");
+  }
 };
 
-exports.delete = (req, res) => {
+exports.delete = async (req, res) => {
   const id = req.params.id;
   console.log(`Deleting employer with id: ${id}`);
 
-  Employer.delete(id, (err, result) => {
-    if (err) {
-      console.error("Error deleting employer:", err);
-      res.status(500).send("Error deleting employer");
-      return;
-    }
+  try {
+    const result = await Employer.delete(id);
     if (result.affectedRows === 0) {
       console.log(`Employer with id ${id} not found`);
       res.status(404).send("Employer not found");
@@ -96,5 +89,8 @@ exports.delete = (req, res) => {
     }
     console.log(`Employer with id ${id} deleted:`, result);
     res.send("Employer deleted");
-  });
+  } catch (err) {
+    console.error("Error deleting employer:", err);
+    res.status(500).send("Error deleting employer");
+  }
 };

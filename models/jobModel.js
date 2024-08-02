@@ -1,106 +1,60 @@
-const db = require("../config/db");
+const { executeQuery } = require("../config/dbHelper");
 
 const Job = {
-  findBySkills: (skills, callback) => {
+  findBySkills: async (skills) => {
     const query = `
       SELECT * FROM tbl_108_dowork_Jobs 
       WHERE skill IN (?)`;
     console.log("Executing query:", query, skills);
-    db.query(query, [skills], (err, results) => {
-      if (err) {
-        console.error("Error executing query:", err);
-        return callback(err, null);
-      }
-      console.log("Query results:", results);
-      callback(null, results);
-    });
+    return executeQuery(query, [skills]);
   },
 
-  create: (job, callback) => {
+  create: async (job) => {
     const query =
-      "INSERT INTO tbl_108_dowork_Jobs  (employer_id, title, description, location, salary, skill) VALUES (?, ?, ?, ?, ?, ?)";
-    console.log("Executing query:", query, job);
-    db.query(
-      query,
-      [
-        job.employer_id,
-        job.title,
-        job.description,
-        job.location,
-        job.salary,
-        job.skill,
-      ],
-      (err, result) => {
-        if (err) {
-          console.error("Error executing query:", err);
-          callback(err, null);
-          return;
-        }
-        console.log("Query executed successfully:", result);
-        callback(null, result);
-      }
-    );
+      "INSERT INTO tbl_108_dowork_Jobs (employer_id, title, description, location, salary, skill) VALUES (?, ?, ?, ?, ?, ?)";
+    const values = [
+      job.employer_id,
+      job.title,
+      job.description,
+      job.location,
+      job.salary,
+      job.skill,
+    ];
+    console.log("Executing query:", query, values);
+    return executeQuery(query, values);
   },
 
-  findAll: (callback) => {
-    const query = "SELECT * FROM tbl_108_dowork_Jobs ";
+  findAll: async () => {
+    const query = "SELECT * FROM tbl_108_dowork_Jobs";
     console.log("Executing query:", query);
-    db.query(query, (err, results) => {
-      if (err) {
-        console.error("Error executing query:", err);
-        callback(err, null);
-        return;
-      }
-      console.log("Query executed successfully:", results);
-      callback(null, results);
-    });
+    return executeQuery(query);
   },
 
-  findById: (id, callback) => {
-    const query = "SELECT * FROM tbl_108_dowork_Jobs  WHERE job_id = ?";
+  findById: async (id) => {
+    const query = "SELECT * FROM tbl_108_dowork_Jobs WHERE job_id = ?";
     console.log("Executing query:", query, id);
-    db.query(query, [id], (err, result) => {
-      if (err) {
-        console.error("Error executing query:", err);
-        callback(err, null);
-        return;
-      }
-      console.log("Query executed successfully:", result);
-      callback(null, result);
-    });
+    return executeQuery(query, [id]);
   },
 
-  update: (id, job, callback) => {
+  update: async (id, job) => {
     const query =
-      "UPDATE tbl_108_dowork_Jobs  SET title = ?, description = ?, location = ?, salary = ?, skill = ? WHERE job_id = ?";
-    console.log("Executing query:", query, job, id);
-    db.query(
-      query,
-      [job.title, job.description, job.location, job.salary, job.skill, id],
-      (err, result) => {
-        if (err) {
-          console.error("Error executing query:", err);
-          callback(err, null);
-          return;
-        }
-        console.log("Query executed successfully:", result);
-        callback(null, result);
-      }
-    );
+      "UPDATE tbl_108_dowork_Jobs SET title = ?, description = ?, location = ?, salary = ?, skill = ? WHERE job_id = ?";
+    const values = [
+      job.title,
+      job.description,
+      job.location,
+      job.salary,
+      job.skill,
+      id,
+    ];
+    console.log("Executing query:", query, values);
+    return executeQuery(query, values);
   },
 
-  delete: (id, callback) => {
-    const query = "DELETE FROM tbl_108_dowork_Jobs  WHERE job_id = ?";
+  delete: async (id) => {
+    const query = "DELETE FROM tbl_108_dowork_Jobs WHERE job_id = ?";
     console.log("Executing query:", query, id);
-    db.query(query, [id], (err, result) => {
-      if (err) {
-        console.error("Error executing query:", err);
-        callback(err, null);
-        return;
-      }
-      console.log("Query executed successfully:", result);
-      callback(null, result);
-    });
+    return executeQuery(query, [id]);
   },
 };
 

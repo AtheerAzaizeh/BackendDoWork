@@ -1,30 +1,27 @@
-const db = require("../config/db");
+const { executeQuery } = require("../config/dbHelper");
 
 const User = {
-  findByEmail: (email, callback) => {
+  findByEmail: async (email) => {
     const queryEmployeeSeekers =
       "SELECT * FROM tbl_108_dowork_EmployeeSeekers WHERE email = ?";
-    const queryJobSeekers = "SELECT * FROM jobSeekers WHERE email = ?";
+    const queryJobSeekers =
+      "SELECT * FROM tbl_108_dowork_JobSeekers WHERE email = ?";
 
-    db.query(queryEmployeeSeekers, [email], (err, employeeResults) => {
-      if (err) {
-        return callback(err, null, null);
-      }
+    try {
+      const employeeResults = await executeQuery(queryEmployeeSeekers, [email]);
       if (employeeResults.length > 0) {
-        return callback(null, employeeResults[0], "employee");
+        return { user: employeeResults[0], type: "employee" };
       } else {
-        db.query(queryJobSeekers, [email], (err, jobResults) => {
-          if (err) {
-            return callback(err, null, null);
-          }
-          if (jobResults.length > 0) {
-            return callback(null, jobResults[0], "job");
-          } else {
-            return callback(null, null, null);
-          }
-        });
+        const jobResults = await executeQuery(queryJobSeekers, [email]);
+        if (jobResults.length > 0) {
+          return { user: jobResults[0], type: "job" };
+        } else {
+          return { user: null, type: null };
+        }
       }
-    });
+    } catch (err) {
+      throw new Error(`Error fetching user by email: ${err.message}`);
+    }
   },
 };
 
