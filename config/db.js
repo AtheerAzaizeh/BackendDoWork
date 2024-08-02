@@ -5,7 +5,9 @@ const db = mysql.createConnection({
   host: process.env.DB_HOST,
   user: process.env.DB_USER, // Your MySQL username
   password: process.env.DB_PASS, // Your MySQL password
-  database: process.env.DB_NAME, // The database you created
+  database: process.env.DB_NAME,
+  keepAliveInitialDelay: 10000,
+  enableKeepAlive: true,// The database you created
 });
 
 db.connect((err) => {
