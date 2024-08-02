@@ -3,18 +3,20 @@ const db = require("../config/db");
 const EmployeeSeeker = {
   create: (employeeSeeker, callback) => {
     const query =
-      "INSERT INTO EmployeeSeekers (username, password, email) VALUES (?, ?, ?)";
-    console.log("Executing query:", query, employeeSeeker);
+      "INSERT INTO EmployeeSeekers (username, password, email, profile_picture) VALUES (?, ?, ?, ?)";
     db.query(
       query,
-      [employeeSeeker.username, employeeSeeker.password, employeeSeeker.email],
+      [
+        employeeSeeker.username,
+        employeeSeeker.password,
+        employeeSeeker.email,
+        employeeSeeker.profile_picture,
+      ],
       (err, result) => {
         if (err) {
           console.error("Error executing query:", err);
-          callback(err, null);
-          return;
+          return callback(err, null);
         }
-        console.log("Query executed successfully:", result);
         callback(null, result);
       }
     );

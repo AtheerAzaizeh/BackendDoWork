@@ -1,6 +1,10 @@
 const express = require("express");
 const app = express();
-const port = 3000;
+const path = require("path");
+const multer = require("multer");
+
+const port = process.env.PORT || 3000;
+const cors = require("cors");
 const employeeSeekerRoutes = require("./routes/employeeSeekerRoutes");
 const jobSeekerRoutes = require("./routes/jobSeekerRoutes");
 const employerRoutes = require("./routes/employerRoutes");
@@ -10,15 +14,36 @@ const skillRoutes = require("./routes/skillRoutes");
 const workExperienceRoutes = require("./routes/workExperienceRoutes");
 const applicationRoutes = require("./routes/applicationRoutes");
 const educationRoutes = require("./routes/educationRoutes");
+const authRoutes = require("./routes/authRoutes");
+
+app.use(cors());
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 console.log("Initializing middleware to parse JSON bodies");
 app.use(express.json());
 
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "uploads/");
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + path.extname(file.originalname));
+  },
+});
+
+const upload = multer({ storage: storage });
+
+app.use("/auth", authRoutes); // Use the new login route
+
 console.log("Initializing employee seeker routes");
-app.use("/employeeSeekers", employeeSeekerRoutes);
+app.use(
+  "/employeeSeekers",
+  upload.single("profile_picture"),
+  employeeSeekerRoutes
+);
 
 console.log("Initializing job seeker routes");
-app.use("/jobSeekers", jobSeekerRoutes);
+app.use("/jobSeekers", upload.single("profile_picture"), jobSeekerRoutes);
 
 console.log("Initializing employer routes");
 app.use("/employers", employerRoutes);

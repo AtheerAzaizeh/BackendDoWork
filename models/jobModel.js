@@ -1,13 +1,35 @@
 const db = require("../config/db");
 
 const Job = {
+  findBySkills: (skills, callback) => {
+    const query = `
+      SELECT * FROM Jobs 
+      WHERE skill IN (?)`;
+    console.log("Executing query:", query, skills);
+    db.query(query, [skills], (err, results) => {
+      if (err) {
+        console.error("Error executing query:", err);
+        return callback(err, null);
+      }
+      console.log("Query results:", results);
+      callback(null, results);
+    });
+  },
+
   create: (job, callback) => {
     const query =
-      "INSERT INTO Jobs (employer_id, title, description, location, salary) VALUES (?, ?, ?, ?, ?)";
+      "INSERT INTO Jobs (employer_id, title, description, location, salary, skill) VALUES (?, ?, ?, ?, ?, ?)";
     console.log("Executing query:", query, job);
     db.query(
       query,
-      [job.employer_id, job.title, job.description, job.location, job.salary],
+      [
+        job.employer_id,
+        job.title,
+        job.description,
+        job.location,
+        job.salary,
+        job.skill,
+      ],
       (err, result) => {
         if (err) {
           console.error("Error executing query:", err);
@@ -50,11 +72,11 @@ const Job = {
 
   update: (id, job, callback) => {
     const query =
-      "UPDATE Jobs SET title = ?, description = ?, location = ?, salary = ? WHERE job_id = ?";
+      "UPDATE Jobs SET title = ?, description = ?, location = ?, salary = ?, skill = ? WHERE job_id = ?";
     console.log("Executing query:", query, job, id);
     db.query(
       query,
-      [job.title, job.description, job.location, job.salary, id],
+      [job.title, job.description, job.location, job.salary, job.skill, id],
       (err, result) => {
         if (err) {
           console.error("Error executing query:", err);

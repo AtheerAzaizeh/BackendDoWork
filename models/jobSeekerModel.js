@@ -3,11 +3,16 @@ const db = require("../config/db");
 const JobSeeker = {
   create: (jobSeeker, callback) => {
     const query =
-      "INSERT INTO JobSeekers (username, password, email) VALUES (?, ?, ?)";
+      "INSERT INTO JobSeekers (username, password, email, skills) VALUES (?, ?, ?, ?)";
     console.log("Executing query:", query, jobSeeker);
     db.query(
       query,
-      [jobSeeker.username, jobSeeker.password, jobSeeker.email],
+      [
+        jobSeeker.username,
+        jobSeeker.password,
+        jobSeeker.email,
+        jobSeeker.skills,
+      ],
       (err, result) => {
         if (err) {
           console.error("Error executing query:", err);
@@ -50,11 +55,17 @@ const JobSeeker = {
 
   update: (id, jobSeeker, callback) => {
     const query =
-      "UPDATE JobSeekers SET username = ?, password = ?, email = ? WHERE job_seeker_id = ?";
+      "UPDATE JobSeekers SET username = ?, password = ?, email = ?, skills = ? WHERE job_seeker_id = ?";
     console.log("Executing query:", query, jobSeeker, id);
     db.query(
       query,
-      [jobSeeker.username, jobSeeker.password, jobSeeker.email, id],
+      [
+        jobSeeker.username,
+        jobSeeker.password,
+        jobSeeker.email,
+        jobSeeker.skills,
+        id,
+      ],
       (err, result) => {
         if (err) {
           console.error("Error executing query:", err);
