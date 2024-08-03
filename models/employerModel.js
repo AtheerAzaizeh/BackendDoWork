@@ -27,6 +27,13 @@ const Employer = {
     return executeQuery(query, [id]);
   },
 
+  findByEmployeeSeekerId: async (employeeSeekerId) => {
+    const query =
+      "SELECT * FROM tbl_108_dowork_Employers WHERE employee_seeker_id = ?";
+    console.log("Executing query:", query, employeeSeekerId);
+    return executeQuery(query, [employeeSeekerId]);
+  },
+
   update: async (id, employer) => {
     const query =
       "UPDATE tbl_108_dowork_Employers SET company_name = ?, company_description = ?, contact_email = ?, employee_seeker_id = ? WHERE employer_id = ?";

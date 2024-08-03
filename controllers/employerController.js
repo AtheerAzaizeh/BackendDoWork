@@ -87,3 +87,18 @@ exports.delete = async (req, res) => {
     res.status(500).send("Error deleting employer");
   }
 };
+exports.getEmployerByEmployeeSeekerId = async (req, res) => {
+  const employeeSeekerId = req.params.employeeSeekerId;
+
+  try {
+    const employer = await Employer.findByEmployeeSeekerId(employeeSeekerId);
+    if (employer.length > 0) {
+      res.status(200).json(employer[0]);
+    } else {
+      res.status(404).json({ message: "Employer not found" });
+    }
+  } catch (err) {
+    console.error("Error fetching employer by employee seeker ID:", err);
+    res.status(500).json({ message: "Error fetching employer" });
+  }
+};

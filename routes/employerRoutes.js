@@ -29,4 +29,6 @@ router.delete("/:id", (req, res) => {
   employerController.delete(req, res);
 });
 
+router.get('/employee-seeker/:employeeSeekerId', employerController.getEmployerByEmployeeSeekerId);
+
 module.exports = router;
