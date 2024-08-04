@@ -42,10 +42,10 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use('/api', registerRoutes);
-app.use('/api', loginRoutes);
+app.use("/", registerRoutes);
+app.use("/", loginRoutes);
 
-app.use('/api', comparisonRoutes);
+app.use('/', comparisonRoutes);
 
 
 console.log("Initializing employee seeker routes");
