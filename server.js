@@ -42,7 +42,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use("/", registerRoutes);
+app.use("/register", registerRoutes);
 app.use("/", loginRoutes);
 
 app.use('/', comparisonRoutes);
